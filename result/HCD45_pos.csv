@@ -1,0 +1,12 @@
+,0
+XGBoost + Ramdom Forest,77.08
+XGBoost + LightGBM,82.14
+XGBoost + Keras,78.87
+Random Forest + LightGBM,80.36
+Random Forest + Keras,75.3
+LightGBM+Keras,83.63
+XGBoost + Random Forest + LightGBM,80.36
+XGBoost + Random Forest + Keras,79.46
+XGBoost + LightGBM + Keras,84.82
+Random Forest + LightGBM + Keras,82.14
+XGBoost + Random Forest + LightGBM + Keras,84.23
