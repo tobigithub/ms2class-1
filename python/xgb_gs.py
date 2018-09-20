@@ -3,8 +3,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import pickle
-import xgboost as xgb
-import time
+from xgboost import XGBClassifier
+from xgboost import plot_tree
+import matplotlib.pyplot as plt
+import itertools
+import warnings
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -15,12 +18,19 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
 
-df = pd.read_csv('../data/feature_importance_pos.csv', index_col=0)
+# read data
+df = pd.concat([
+    pd.read_csv('../data/feature_selection_positive.csv', index_col=0),
+    pd.read_csv('../data/decomp_pos.csv', index_col=0).drop('Subclass', axis=1)
+], axis=1)
+
+# divide objective and target
 objective = df.Subclass
 le = preprocessing.LabelEncoder()
 objective = le.fit_transform(objective)
 features = df.drop('Subclass', axis=1)
 
+# train test split
 random_state=np.random.seed(42)
 X_train, X_test, y_train, y_test = train_test_split(
     features, 
@@ -28,49 +38,30 @@ X_train, X_test, y_train, y_test = train_test_split(
     test_size=0.2
 )
 
-import warnings
-warnings.filterwarnings('ignore')
-param = {
-    'tree_method':'gpu_hist',
-    'gpu_id': 1
-}
-
-num_round = 100
-
-t = xgb.XGBClassifier(**param)
+# gridsearch
 
 params = {
-    'objective':['multi:softmax'],
-    'min_child_weight': [1, 2, 3],
-#     'learning_rate':[0.1, 0.2, 0.3, 0.4], 
-    'subsample': [0.6, 0.8, 1.0],
-    'colsample_bytree': [0.5, 0.8, 1.0],
-    'max_depth': [3, 5, 7],
-#     'learning_rate':[0.1],
-#     'n_estimators':[1000],
-#     'max_delta_step':[5],
-    'gamma':[0,3,10],
-#     'colsample_bytree':[0.8],
-#     'scale_pos_weight':[1],
+    'max_depth': [5, 7, 6],
+    'min_child_weight': [1, 5, 3],
+    'subsample': [0.3, 0.4, 0.5],
+    'colsample_bytree':  [0.5, 0.6, 0.7]
 }
 
-grid_search = GridSearchCV(
-    estimator = t, 
-    param_grid = params, 
-    cv = 3, 
-    n_jobs = -1, 
-    verbose = 1
+xgb = XGBClassifier(
+    device='gpu',
+    gpu_id=1,
+    updater='grow_gpu_hist',
+    objective='multi:softmax',
+    n_estimators=1000
 )
 
-start = time.time()
-grid_search.fit(X_train, y_train)
-elapsed_time = time.time() - start
+clf = GridSearchCV(
+    xgb,
+    params,
+#     verbose=0,
+    cv=3,
+    n_jobs=-1
+)
 
-f = grid_search.best_estimator_
-f.fit(X_train, y_train)
-
-f.score(X_test, y_test)
-
-loaded_model = pickle.load(open('../result/xgb_gs.pkl', 'rb'))
-if f.score(X_test, y_test) > loaded_model.score(X_test, y_test):
-    pickle.dump(f, open('../result/xgb_gs.pkl', "wb"))
+clf.fit(X_train, y_train)
+pickle.dump(clf, open('../model/XGB_best_params.sav', 'wb'))
