@@ -1,3 +1,4 @@
+# import some library
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -21,6 +22,7 @@ df = pd.concat([
     pd.read_csv('../data/feature_selection_positive.csv', index_col=0),
     pd.read_csv('../data/decomp_pos.csv', index_col=0).drop('Subclass', axis=1)
 ], axis=1)
+
 # divide objective and target
 objective = df.Subclass
 le = preprocessing.LabelEncoder()
@@ -48,18 +50,10 @@ X_train, X_test, y_train, y_test = train_test_split(
 # silent=True, importance_type='split', **kwargs
 
 params = {
-    'num_leaves': [31
-     , 100, 150
-                  ],
-    'max_depth': [100, 
-                  200, -1
-                 ],
-    'min_child_samples': [20, 
-                          40, 60
-                         ],
-    'boosting': ['gbdt',
-                 'dart'
-                ]
+    'num_leaves': [31],
+    'max_depth': [100, 200, -1],
+    'min_child_samples': [20, 40, 60],
+#     'boosting': ['gbdt']
 }
 
 gbm = lgb.LGBMClassifier(
@@ -71,10 +65,12 @@ gbm = lgb.LGBMClassifier(
 clf = GridSearchCV(
     gbm,
     params,
-#     verbose=0,
+    verbose=2,
     cv=3,
     n_jobs=-1
 )
 
 clf.fit(X_train, y_train)
-pickle.dump(gbm, open('../model/LGBM_best_params_fs_deco.sav', 'wb'))
+
+f = clf.best_estimator_
+pickle.dump(f, open('../model_gs/lgbm_fs_deco.sav', 'wb'))

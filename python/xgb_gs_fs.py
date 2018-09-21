@@ -1,3 +1,4 @@
+# import some library
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -20,6 +21,7 @@ from sklearn.model_selection import cross_val_score
 
 # read data
 df = pd.read_csv('../data/feature_selection_positive.csv', index_col=0)
+
 # divide objective and target
 objective = df.Subclass
 le = preprocessing.LabelEncoder()
@@ -48,16 +50,19 @@ xgb = XGBClassifier(
     gpu_id=1,
     updater='grow_gpu_hist',
     objective='multi:softmax',
-    n_estimators=1000
+    n_estimators=100
 )
 
 clf = GridSearchCV(
     xgb,
     params,
-#     verbose=0,
+    verbose=2,
     cv=3,
     n_jobs=-1
 )
 
 clf.fit(X_train, y_train)
-pickle.dump(clf, open('../model/XGB_best_params_fs.sav', 'wb'))
+# pickle.dump(clf, open('../model/XGB_best_params_fs.sav', 'wb'))
+
+t = clf.best_estimator_
+pickle.dump(t, open('../model/XGB_best_params.sav', 'wb'))

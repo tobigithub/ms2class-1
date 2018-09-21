@@ -1,3 +1,4 @@
+# import some library
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -33,31 +34,22 @@ X_train, X_test, y_train, y_test = train_test_split(
     test_size=0.2
 )
 
-# Use large max_bin (may be slower)
-# Use small learning_rate with large num_iterations
-# Use large num_leaves (may cause over-fitting)
-# Try dart
+# # Use large max_bin (may be slower)
+# # Use small learning_rate with large num_iterations
+# # Use large num_leaves (may cause over-fitting)
+# # Try dart
 
-# initial parameters on LGBMClassifier
-# boosting_type='gbdt', num_leaves=31, max_depth=-1, learning_rate=0.1, n_estimators=100, 
-# subsample_for_bin=200000, objective=None, class_weight=None, min_split_gain=0.0, 
-# min_child_weight=0.001, min_child_samples=20, subsample=1.0, subsample_freq=0, 
-# colsample_bytree=1.0, reg_alpha=0.0, reg_lambda=0.0, random_state=None, n_jobs=-1, 
-# silent=True, importance_type='split', **kwargs
+# # initial parameters on LGBMClassifier
+# # boosting_type='gbdt', num_leaves=31, max_depth=-1, learning_rate=0.1, n_estimators=100, 
+# # subsample_for_bin=200000, objective=None, class_weight=None, min_split_gain=0.0, 
+# # min_child_weight=0.001, min_child_samples=20, subsample=1.0, subsample_freq=0, 
+# # colsample_bytree=1.0, reg_alpha=0.0, reg_lambda=0.0, random_state=None, n_jobs=-1, 
+# # silent=True, importance_type='split', **kwargs
 
 params = {
-    'num_leaves': [31
-     , 100, 150
-                  ],
-    'max_depth': [100, 
-                  200, -1
-                 ],
-    'min_child_samples': [20, 
-                          40, 60
-                         ],
-    'boosting': ['gbdt',
-                 'dart'
-                ]
+    'num_leaves': [31],
+    'max_depth': [100, 200, -1],
+    'min_child_samples': [20, 40, 60],
 }
 
 gbm = lgb.LGBMClassifier(
@@ -75,4 +67,8 @@ clf = GridSearchCV(
 )
 
 clf.fit(X_train, y_train)
-pickle.dump(gbm, open('../model/LGBM_best_params_fs.sav', 'wb'))
+clf.score(X_test, y_test)
+# pickle.dump(gbm, open('../model/LGBM_best_params_fs.sav', 'wb'))
+
+f = clf.best_estimator_
+pickle.dump(f, open('../model_gs/lgbm_fs.sav', 'wb'))
