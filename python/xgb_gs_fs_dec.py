@@ -33,9 +33,9 @@ objective = le.fit_transform(objective)
 features = df.drop('Subclass', axis=1)
 
 # train test split
-random_state=np.random.seed(42)
+random_state = np.random.seed(42)
 X_train, X_test, y_train, y_test = train_test_split(
-    features, 
+    features,
     objective,
     test_size=0.2
 )
@@ -69,5 +69,4 @@ clf.fit(X_train, y_train)
 # pickle.dump(clf, open('../model/XGB_best_params_fs.sav', 'wb'))
 
 t = clf.best_estimator_
-pickle.dump(t, open('../model_gs/XGB_best_params.sav', 'wb'))
-
+pickle.dump(t, open('../model_gs/XGB_fs_dec.sav', 'wb'))
