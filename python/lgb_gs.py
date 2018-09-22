@@ -27,9 +27,9 @@ objective = le.fit_transform(objective)
 features = df.drop('Subclass', axis=1)
 
 # train test split
-random_state = np.random.seed(42)
+random_state=np.random.seed(42)
 X_train, X_test, y_train, y_test = train_test_split(
-    features,
+    features, 
     objective,
     test_size=0.2
 )
@@ -40,35 +40,38 @@ X_train, X_test, y_train, y_test = train_test_split(
 # # Try dart
 
 # # initial parameters on LGBMClassifier
-# # boosting_type='gbdt', num_leaves=31, max_depth=-1, learning_rate=0.1, n_estimators=100,
-# # subsample_for_bin=200000, objective=None, class_weight=None, min_split_gain=0.0,
-# # min_child_weight=0.001, min_child_samples=20, subsample=1.0, subsample_freq=0,
-# # colsample_bytree=1.0, reg_alpha=0.0, reg_lambda=0.0, random_state=None, n_jobs=-1,
+# # boosting_type='gbdt', num_leaves=31, max_depth=-1, learning_rate=0.1, n_estimators=100, 
+# # subsample_for_bin=200000, objective=None, class_weight=None, min_split_gain=0.0, 
+# # min_child_weight=0.001, min_child_samples=20, subsample=1.0, subsample_freq=0, 
+# # colsample_bytree=1.0, reg_alpha=0.0, reg_lambda=0.0, random_state=None, n_jobs=-1, 
 # # silent=True, importance_type='split', **kwargs
 
 params = {
     'num_leaves': [31],
     'max_depth': [100, 200, -1],
     'min_child_samples': [20, 40, 60],
+    'boosting': ['gbdt']
 }
 
 gbm = lgb.LGBMClassifier(
     objective='multiclass',
-    device='gpu',
-    n_jobs=-1
+    device = 'gpu',
+    gpu_device_id=1,
+    n_jobs=-1 
 )
 
 clf = GridSearchCV(
     gbm,
     params,
-    #     verbose=0,
+    verbose=2,
     cv=3,
     n_jobs=-1
 )
 
 clf.fit(X_train, y_train)
-clf.score(X_test, y_test)
+# clf.score(X_test, y_test)
 # pickle.dump(gbm, open('../model/LGBM_best_params_fs.sav', 'wb'))
 
-f = clf.best_estimator_
-pickle.dump(f, open('../model_gs/lgbm_fs.sav', 'wb'))
+# accuracy
+t = clf.best_estimater_
+pickle.dump(t, open('../model_gs/LGBM_best_params_fs.sav', 'wb'))
