@@ -47,9 +47,10 @@ X_train, X_test, y_train, y_test = train_test_split(
 # # silent=True, importance_type='split', **kwargs
 
 params = {
-    'num_leaves': [31],
+    'num_leaves': [31, 50, 100],
+    'max_bin':[255],
     'max_depth': [100, 200, -1],
-    'min_child_samples': [20, 40, 60],
+    'min_child_samples': [10, 20, 30, 40, 50],
     'boosting': ['gbdt']
 }
 

@@ -69,4 +69,4 @@ clf.fit(X_train, y_train)
 # pickle.dump(clf, open('../model/XGB_best_params_fs.sav', 'wb'))
 
 t = clf.best_estimator_
-pickle.dump(t, open('../model_gs/XGB_fs_dec.sav', 'wb'))
+pickle.dump(t, open('../model_gs/XGB_fs_deco.sav', 'wb'))
