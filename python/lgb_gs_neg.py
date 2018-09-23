@@ -17,7 +17,10 @@ from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
 
 # read data
-df = pd.read_csv('../data/feature_importance_neg.csv', index_col=0)
+df = pd.concat([
+    pd.read_csv('../data/feature_selection_negative.csv', index_col=0),
+    pd.read_csv('../data/decomp_neg.csv', index_col=0).drop('Subclass', axis=1)
+], axis=1)
 
 # divide objective and target
 objective = df.Subclass
@@ -69,4 +72,4 @@ clf = GridSearchCV(
 
 clf.fit(X_train, y_train)
 t = clf.best_estimator_
-pickle.dump(t, open('../model_gs/LGBM_best_params_fs_neg.sav', 'wb'))
+pickle.dump(t, open('../model_gs/LGBM_best_params_fs_deco_neg.sav', 'wb'))
