@@ -1,3 +1,5 @@
-,Random Forest,LightGBM,XGBoost,Keras
-Decomposition + HCD35,69.94,83.63,80.65,63.99
-Decomposition + HCD35,69.15,72.34,78.72,62.77
+,Decomposition + HCD35_Positive,Decomposition + HCD35_Negative
+Random Forest,69.94,69.15
+LightGBM,83.63,72.34
+XGBoost,80.65,78.72
+Keras,64.88,62.77
