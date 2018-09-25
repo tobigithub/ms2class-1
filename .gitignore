@@ -42,5 +42,5 @@ package-lock.json
 
 model/*.h5
 csv/
-data/
+data/*
 ipynb/merge.ipynb
