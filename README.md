@@ -1,6 +1,6 @@
-# Prediction compound sub class from Mass spectora
+# Prediction compound's subclass from Mass spectora
 
-Overview
+## Overview
 This is Keras, LightGBM and XGBoost implementation for the task of multi-class classification from Mass Spectora.
 
 Yoshitaka Inoue, Tobias Kind, [Deep learning and gradient boosting for classification of high resolution tandem mass spectra](link)
@@ -20,5 +20,5 @@ Yoshitaka Inoue, Tobias Kind, [Deep learning and gradient boosting for classific
 - matplotlib (2.2.2)
 - seaborn (0.8.1)
 
-## Dataset
+## Dataset *plz add Dataset to data folder
 [Google Drive](https://drive.google.com/open?id=1qssVBZe-TKuLCr53fg0DkLF_w2wU1KrU)
