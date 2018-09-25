@@ -1,4 +1,4 @@
-# Prediction compound sub class from Mass spectora
+# Prediction compound's subclass from Mass spectora
 
 Overview
 This is Keras, LightGBM and XGBoost implementation for the task of multi-class classification from Mass Spectora.
