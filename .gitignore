@@ -43,5 +43,6 @@ package-lock.json
 model/*.h5
 csv/
 data/*
-!.gitkeep
+!*.zip
+!*.msp
 ipynb/merge.ipynb
