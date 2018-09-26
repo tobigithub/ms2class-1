@@ -20,5 +20,5 @@ Yoshitaka Inoue, Tobias Kind, [Deep learning and gradient boosting for classific
 - matplotlib (2.2.2)
 - seaborn (0.8.1)
 
-## Dataset *plz add Dataset to data folder
-[Google Drive](https://drive.google.com/open?id=1qssVBZe-TKuLCr53fg0DkLF_w2wU1KrU)
+## Dataset *plz add Dataset to 'data' folder
+[Initial dataset](https://drive.google.com/open?id=1TVuOx5dfKrc6MhiNtaXVy36GM5MFRpaZ)
